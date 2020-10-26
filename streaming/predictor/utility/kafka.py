@@ -30,20 +30,21 @@ class KafkaClient:
     
     def __useMessage(self, message, actionable, action):
         if actionable(message):
-            thread = Thread(target = action, args = (message, ))
-            self.threads.append(thread)
-            thread.start()
+            action(message)
+            # thread = Thread(target = action, args = (message, ))
+            # self.threads.append(thread)
+            # thread.start()
         return
     
     def __consume(self, actionable, action):
         stop = False
-        self.threads = []
+        # self.threads = []
         while not stop:
             message = self.client.poll(KAFKA.CONSUMER_POLL_TIME)
             if message != None:
                 self.__useMessage(message.value().decode("utf-8"), actionable, action)
-        for thread in self.threads:
-            thread.join()
+        # for thread in self.threads:
+        #     thread.join()
         self.client.close()
         return
     

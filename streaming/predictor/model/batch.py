@@ -3,6 +3,7 @@ from pyspark.sql.types import ArrayType, StructField, StructType, StringType, In
 import constant.batch as BATCH
 from configuration.connection import spark
 from model.pollsData import PollsData
+import math
 
 class Batch:
     def __init__(self):
@@ -29,7 +30,9 @@ class Batch:
         for row in rows:
             tmp = []
             for column in row.split(','):
-                try: tmp.append(float(column))
+                try: 
+                    number = float(column)
+                    tmp.append(number if not math.isnan(number) else 0.0)
                 except: tmp.append(column)
             result.append(tmp)
         return result
@@ -44,6 +47,7 @@ class Batch:
         result = False
         if self.size != None:
             result = 100/self.size*len(self.data) >= BATCH.ACCEPTER_BATCH_PERCENTAGE
+        print("Captured {:.2f}% of data".format(100/self.size*len(self.data)), end="\r")
         return result
     
     def action(self, message):
