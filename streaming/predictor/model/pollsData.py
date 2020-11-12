@@ -52,19 +52,13 @@ class PollsData:
             data = DIVISION["PREDICTION"][div]
             for state in self.states:
                 df = self.group[div][state["state"]]
-                linear = prediction.linearRegression(df, data["LABEL"], data["FEATURES"], data["ADJUST"])
+                isotonic = prediction.isotonicRegression(df, data["LABEL"], data["FEATURES"], data["ADJUST"])
                 self.advanceUnitProgress()
-                # generalize = prediction.generalizeRegression(df, data["LABEL"], data["FEATURES"], data["ADJUST"])
-                # self.advanceUnitProgress()
-                # isotonic = prediction.isotonicRegression(df, data["LABEL"], data["FEATURES"], data["ADJUST"])
-                # self.advanceUnitProgress()
-                models = [(linear, "linear")]#, (generalize, "generalize"), (isotonic, "isotonic")]
+                models = [(isotonic, "isotonic")]
                 comparison = prediction.compareResult(models)
                 self.result[div][state["state"]] = {
                     "models": {
-                        "linear": linear, 
-                        # "generalize": generalize,
-                        # "isotonic": isotonic
+                        "isotonic": isotonic
                     },
                     "comparison": comparison
                 }
