@@ -6,3 +6,5 @@ import constant.system as CONS
 spark = SparkSession.builder \
     .master(CONS.SPARK_MASTER_IP) \
     .appName(CONS.SPARK_CONN_NAME).getOrCreate()
+
+spark.sparkContext.setLogLevel("OFF")
