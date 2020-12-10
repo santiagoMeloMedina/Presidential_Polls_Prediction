@@ -11,7 +11,7 @@ def main():
     polls.setDataframe(new_data)
     polls.prediction()
     polls.output("result")
-
+    
 
 if __name__ == "__main__":
     main()
